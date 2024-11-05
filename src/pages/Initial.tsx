@@ -1,8 +1,24 @@
 import React from 'react';
 import { FaArrowRight } from "react-icons/fa";
 import { TbBrandGithubFilled } from "react-icons/tb";
+import { app } from '../firebaseConfig';
+import { GithubAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
 
 const Initial = () => {
+
+  const githubProvider = new GithubAuthProvider()
+  const auth = getAuth(app);
+
+  const gitHubSignUp = () => {
+    signInWithPopup(auth, githubProvider)
+    .then((response) => {
+      console.log(response.user)
+    })
+    .catch((err) => {
+      console.log(err.code)
+    })
+  }
+
   return (
     <>
       <div className="flex items-center justify-center min-h-screen">
@@ -32,7 +48,7 @@ const Initial = () => {
 
           <div className="flex items-center justify-center space-x-2">
             <p className="text-base font-bold px-1 text-primary_text">Acesse sua conta com</p>
-            <button className="flex items-center w-24 h-10 px-4 text-white bg-dark_green rounded-full hover:bg-primary_color space-x-2">
+            <button onClick={gitHubSignUp} className="flex items-center w-24 h-10 px-4 text-white bg-dark_green rounded-full hover:bg-primary_color space-x-2">
               <TbBrandGithubFilled className="w-12 h-12" />
               <span className='font-bold text-xs'>GitHub</span>
             </button>

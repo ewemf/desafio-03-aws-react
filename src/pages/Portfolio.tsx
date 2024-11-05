@@ -1,8 +1,12 @@
 import React from 'react'
+import Header from '../components/Header'
 
 const Portfolio = () => {
   return (
-    <div>Portfolio</div>
+    <div>
+        <Header/>
+        Portfolio
+    </div>
   )
 }
 
