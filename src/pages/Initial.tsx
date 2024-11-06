@@ -21,7 +21,7 @@ const Initial = () => {
 
   return (
     <>
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen font-roboto">
         <div className="w-full max-w-xl px-4 py-8 text-center rounded-lg">
           <h1 className="mb-4 text-0xl w-auto font-bold text-primary_text">
             Digite o nome do usuário que deseja buscar
