@@ -17,7 +17,11 @@ module.exports = {
       },
       fontSize: {
         "0xl": "26.2px",
-      }
+        "4xl": "38px",
+      },
+      fontFamily: {
+        roboto: ["Roboto", "sans-serif"],
+      },
     },
   },
   plugins: [],
