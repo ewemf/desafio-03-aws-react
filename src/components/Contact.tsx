@@ -1,8 +1,12 @@
 import React from 'react'
 import instaBeW from '../imgs/b&w/instaBeW.svg'
+import insta from '../imgs/insta.svg'
 import fbBeW from '../imgs/b&w/fbBeW.svg'
+import face from '../imgs/face.svg'
 import twtBeW from '../imgs/b&w/twtBeW.svg'
+import twt from '../imgs/twitter.svg'
 import ytBeW from '../imgs/b&w/ytBeW.svg'
+import yt from '../imgs/youtube.svg'
 import { FaLocationDot } from "react-icons/fa6";
 
 const Contact = () => {
@@ -18,17 +22,21 @@ const Contact = () => {
         <div className='flex flex-col py-20 pb-12 text-center'>
             <p className="text-2xl mb-3 font-bold text-primary_text">Assim que possível, me envie um email para que possamos <br></br> trabalhar felizes juntos!</p> 
                 <div className="flex justify-center space-x-1 mb-8"> 
-                    <div className="mt-12 bg-dark_green rounded-full w-16 h-16 flex items-center justify-center">
-                        <img className='w-12' src={instaBeW} alt="Instagram B&W" />
+                    <div className="mt-12 bg-dark_green rounded-full w-16 h-16 flex items-center justify-center cursor-pointer">
+                        <img className='w-12 absolute opacity-100 hover:opacity-0 transition-opacity duration-100' src={instaBeW} alt="Instagram B&W" />
+                        <img className='w-12 absolute opacity-0 hover:opacity-100 transition-opacity duration-100' src={insta} alt="Instagram" />
                     </div>
-                    <div className="mt-12 bg-dark_green rounded-full w-16 h-16 flex items-center justify-center">
-                        <img className='w-12' src={fbBeW} alt="Facebook B&W" />
+                    <div className="mt-12 bg-dark_green rounded-full w-16 h-16 flex items-center justify-center cursor-pointer">
+                        <img className='w-12 absolute opacity-100 hover:opacity-0 transition-opacity duration-100' src={fbBeW} alt="Facebook B&W" />
+                        <img className='w-12 absolute opacity-0 hover:opacity-100 transition-opacity duration-100' src={face} alt="Facebook" />
                     </div>
-                    <div className="mt-12 bg-dark_green rounded-full w-16 h-16 flex items-center justify-center">
-                        <img className='w-12' src={twtBeW} alt="Twitter B&W" />
+                    <div className="mt-12 bg-dark_green rounded-full w-16 h-16 flex items-center justify-center cursor-pointer">
+                        <img className='w-12 absolute opacity-100 hover:opacity-0 transition-opacity duration-100' src={twtBeW} alt="Twitter B&W" />
+                        <img className='w-12 absolute opacity-0 hover:opacity-100 transition-opacity duration-100' src={twt} alt="Twitter" />
                     </div>
-                    <div className="mt-12 bg-dark_green rounded-full w-16 h-16 flex items-center justify-center">
-                        <img className='w-12' src={ytBeW} alt="Youtube B&W" />
+                    <div className="mt-12 bg-dark_green rounded-full w-16 h-16 flex items-center justify-center cursor-pointer">
+                        <img className='w-12 absolute opacity-100 hover:opacity-0 transition-opacity duration-100' src={ytBeW} alt="Youtube B&W" />
+                        <img className='w-12 absolute opacity-0 hover:opacity-100 transition-opacity duration-100' src={yt} alt="Youtube" />
                     </div>
                 </div>
                 <div className="text-primary_text flex flex-row justify-between mx-100 pt-6 font-medium">
