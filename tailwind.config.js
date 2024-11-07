@@ -31,6 +31,9 @@ module.exports = {
         '3xl': '2px 2px rgba(0, 0, 0, 0), 6px 6px rgba(0, 0, 0, 0)',
         '4xl': '1px 1px 1px 3px rgba(0, 0, 0, 1), 4px 0 1px 0 rgba(0, 0, 0, 1)',
       },
+      margin: {
+        '100': '480px',
+      }
     },
   },
   plugins: [],
