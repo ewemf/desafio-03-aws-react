@@ -1,23 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaArrowRight } from "react-icons/fa";
 import { TbBrandGithubFilled } from "react-icons/tb";
 import { app } from '../firebaseConfig';
-import { GithubAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
+import { GithubAuthProvider, getAuth, signInWithPopup, UserCredential, OAuthCredential } from 'firebase/auth';
+import axios from 'axios';
 
-const Initial = () => {
+interface GitHubUser  {
+  login: string;
+  avatar_url: string;
+  html_url: string;
+  name: string;
+  email: string | null;
+  location: string | null;
+  bio: string | null;
+}
 
-  const githubProvider = new GithubAuthProvider()
+const Initial: React.FC = () => {
+  const [userData, setUserData] = useState<GitHubUser  | null>(null);
+  const githubProvider = new GithubAuthProvider();
   const auth = getAuth(app);
+  const navigate = useNavigate();
 
-  const gitHubSignUp = () => {
-    signInWithPopup(auth, githubProvider)
-    .then((response) => {
-      console.log(response.user)
-    })
-    .catch((err) => {
-      console.log(err.code)
-    })
-  }
+  const gitHubSignUp = async () => {
+    try {
+      const response: UserCredential = await signInWithPopup(auth, githubProvider);
+      const credential: OAuthCredential = GithubAuthProvider.credentialFromResult(response)!;
+
+      const token = credential.accessToken;
+
+      const gitHubResponse = await axios.get<GitHubUser >('https://api.github.com/user', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setUserData(gitHubResponse.data);
+      console.log(gitHubResponse.data);
+
+      navigate('/portfolio', { state: { userData: gitHubResponse.data } });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <>
@@ -36,12 +61,12 @@ const Initial = () => {
               />
             </div>
             <button className="px-3 py-2 h-10 w-16 text-white bg-secondary_color border border-primary_text hover:bg-primary_color rounded-xl flex items-center justify-center">
-                <FaArrowRight className="w-6 h-6 flex items-center justify-center" />
-              </button>
+              <FaArrowRight className="w-6 h-6 flex items-center justify-center" />
+            </button>
           </div>
 
           <div className="flex items-center pb-4">
-          <div className="w-full h-1 bg-secondary_color" />
+            <div className="w-full h-1 bg-secondary_color" />
             <span className="mx-2 text-base font-bold text-primary_text">ou</span>
             <div className="w-full h-1 bg-secondary_color" />
           </div>
