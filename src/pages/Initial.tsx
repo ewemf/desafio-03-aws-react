@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaArrowRight } from "react-icons/fa";
 import { TbBrandGithubFilled } from "react-icons/tb";
@@ -17,10 +17,49 @@ interface GitHubUser  {
 }
 
 const Initial: React.FC = () => {
-  const [userData, setUserData] = useState<GitHubUser  | null>(null);
+  const [inputValue, setInputValue] = useState('');
+  const [users, setUsers] = useState<GitHubUser []>([]);
+  const [filteredUsers, setFilteredUsers] = useState<GitHubUser []>([]);
+  const [message, setMessage] = useState('');
   const githubProvider = new GithubAuthProvider();
   const auth = getAuth(app);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedUsers = localStorage.getItem('users');
+    if (storedUsers) {
+      setUsers(JSON.parse(storedUsers));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (inputValue) {
+      const results = users.filter(user => user.name.toLowerCase().includes(inputValue.toLowerCase()));
+      setFilteredUsers(results);
+      setMessage('');
+    } else {
+      setFilteredUsers([]);
+    }
+  }, [inputValue, users]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleSearch = () => {
+    const foundUser  = users.find(user => user.name.toLowerCase() === inputValue.toLowerCase());
+    if (foundUser ) {
+      navigate('/portfolio', { state: { userData: foundUser  } });
+    } else {
+      setMessage('Usuário não encontrado.');
+    }
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  };
 
   const gitHubSignUp = async () => {
     try {
@@ -35,10 +74,13 @@ const Initial: React.FC = () => {
         },
       });
 
-      setUserData(gitHubResponse.data);
-      console.log(gitHubResponse.data);
+      const newUser  = gitHubResponse.data;
 
-      navigate('/portfolio', { state: { userData: gitHubResponse.data } });
+      const updatedUsers = [...users, newUser ];
+      setUsers(updatedUsers);
+      localStorage.setItem('users', JSON.stringify(updatedUsers));
+
+      navigate('/portfolio', { state: { userData: newUser  } });
     } catch (err) {
       console.error(err);
     }
@@ -57,13 +99,32 @@ const Initial: React.FC = () => {
               <input
                 type="text"
                 placeholder="Digite o nome do usuário"
+                value={inputValue}
+                onChange={handleInputChange}
+                onKeyPress={handleKeyPress}
                 className="flex outline-none w-full text-primary_text"
               />
             </div>
-            <button className="px-3 py-2 h-10 w-16 text-white bg-secondary_color border border-primary_text hover:bg-primary_color rounded-xl flex items-center justify-center">
+            <button
+              onClick={handleSearch}
+              disabled={!inputValue}
+              className={`px-3 py-2 h-10 w-16 text-white ${inputValue ? 'bg-secondary_color' : 'bg-tertiary_text hover:bg-tertiary_text cursor-not-allowed'} border border-primary_text hover:bg-primary_color rounded-xl flex items-center justify-center`}
+            >
               <FaArrowRight className="w-6 h-6 flex items-center justify-center" />
             </button>
           </div>
+
+          {message && <p className="text-red-500">{message}</p>}
+
+          {filteredUsers.length > 0 && (
+            <ul className="mt-4">
+              {filteredUsers.map(user => (
+                <li key={user.login} className="text-left text-primary_text">
+                  {user.name} - <a href={user.html_url} target="_blank" rel="noopener noreferrer" className="text-blue-500">{user.login}</a>
+                </li>
+              ))}
+            </ul>
+          )}
 
           <div className="flex items-center pb-4">
             <div className="w-full h-1 bg-secondary_color" />
