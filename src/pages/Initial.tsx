@@ -5,8 +5,9 @@ import { TbBrandGithubFilled } from "react-icons/tb";
 import { app } from '../firebaseConfig';
 import { GithubAuthProvider, getAuth, signInWithPopup, UserCredential, OAuthCredential } from 'firebase/auth';
 import axios from 'axios';
+import person from '../imgs/person.svg';
 
-interface GitHubUser  {
+interface GitHubUser {
   login: string;
   avatar_url: string;
   html_url: string;
@@ -18,9 +19,10 @@ interface GitHubUser  {
 
 const Initial: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
-  const [users, setUsers] = useState<GitHubUser []>([]);
-  const [filteredUsers, setFilteredUsers] = useState<GitHubUser []>([]);
+  const [users, setUsers] = useState<GitHubUser[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<GitHubUser[]>([]);
   const [message, setMessage] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
   const githubProvider = new GithubAuthProvider();
   const auth = getAuth(app);
   const navigate = useNavigate();
@@ -38,7 +40,7 @@ const Initial: React.FC = () => {
       setFilteredUsers(results);
       setMessage('');
     } else {
-      setFilteredUsers([]);
+      setFilteredUsers(users);
     }
   }, [inputValue, users]);
 
@@ -47,9 +49,9 @@ const Initial: React.FC = () => {
   };
 
   const handleSearch = () => {
-    const foundUser  = users.find(user => user.name.toLowerCase() === inputValue.toLowerCase());
-    if (foundUser ) {
-      navigate('/portfolio', { state: { userData: foundUser  } });
+    const foundUser = users.find(user => user.name.toLowerCase() === inputValue.toLowerCase());
+    if (foundUser) {
+      navigate('/portfolio', { state: { userData: foundUser } });
     } else {
       setMessage('Usuário não encontrado.');
     }
@@ -61,6 +63,11 @@ const Initial: React.FC = () => {
     }
   };
 
+  const handleUserClick = (userName: string) => {
+    setInputValue(userName);
+    setShowDropdown(false);
+  };
+
   const gitHubSignUp = async () => {
     try {
       const response: UserCredential = await signInWithPopup(auth, githubProvider);
@@ -68,19 +75,19 @@ const Initial: React.FC = () => {
 
       const token = credential.accessToken;
 
-      const gitHubResponse = await axios.get<GitHubUser >('https://api.github.com/user', {
+      const gitHubResponse = await axios.get<GitHubUser>('https://api.github.com/user', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      const newUser  = gitHubResponse.data;
+      const newUser = gitHubResponse.data;
 
-      const updatedUsers = [...users, newUser ];
-      setUsers(updatedUsers);
+      const updatedUsers = [...users.filter(user => user.login !== newUser.login), newUser]; 
+      setUsers(updatedUsers); 
       localStorage.setItem('users', JSON.stringify(updatedUsers));
 
-      navigate('/portfolio', { state: { userData: newUser  } });
+      navigate('/portfolio', { state: { userData: newUser } });
     } catch (err) {
       console.error(err);
     }
@@ -94,7 +101,7 @@ const Initial: React.FC = () => {
             Digite o nome do usuário que deseja buscar
           </h1>
 
-          <div className="flex items-center justify-center w-full mx-auto pb-4">
+          <div className="flex items-center justify-center w-full mx-auto pb-4 relative">
             <div className="flex-grow flex items-center rounded-xl border p-2 mr-3 border-primary_text overflow-hidden">
               <input
                 type="text"
@@ -102,6 +109,8 @@ const Initial: React.FC = () => {
                 value={inputValue}
                 onChange={handleInputChange}
                 onKeyPress={handleKeyPress}
+                onFocus={() => setShowDropdown(true)}
+                onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
                 className="flex outline-none w-full text-primary_text"
               />
             </div>
@@ -112,19 +121,24 @@ const Initial: React.FC = () => {
             >
               <FaArrowRight className="w-6 h-6 flex items-center justify-center" />
             </button>
+
+            {showDropdown && filteredUsers.length > 0 && (
+              <ul className="absolute top-12 left-0 w-full bg-white text-gray-500 border border-gray-500 rounded-xl overflow-hidden z-10">
+                {filteredUsers.map(user => (
+                  <li 
+                    key={user.login} 
+                    className="p-2 hover:bg-gray-200 cursor-pointer text-left flex items-center"
+                    onMouseDown={() => handleUserClick(user.name)}
+                  >
+                    <img src={person} alt={person} className="w-4 h-4 mr-2" />
+                    {user.name}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           {message && <p className="text-red-500">{message}</p>}
-
-          {filteredUsers.length > 0 && (
-            <ul className="mt-4">
-              {filteredUsers.map(user => (
-                <li key={user.login} className="text-left text-primary_text">
-                  {user.name} - <a href={user.html_url} target="_blank" rel="noopener noreferrer" className="text-blue-500">{user.login}</a>
-                </li>
-              ))}
-            </ul>
-          )}
 
           <div className="flex items-center pb-4">
             <div className="w-full h-1 bg-secondary_color" />
