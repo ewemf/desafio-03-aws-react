@@ -6,6 +6,7 @@ import { app } from '../firebaseConfig';
 import { GithubAuthProvider, getAuth, signInWithPopup, UserCredential, OAuthCredential } from 'firebase/auth';
 import axios from 'axios';
 import person from '../imgs/person.svg';
+import { IoWarning } from "react-icons/io5";
 
 interface GitHubUser {
   login: string;
@@ -53,7 +54,7 @@ const Initial: React.FC = () => {
     if (foundUser) {
       navigate('/portfolio', { state: { userData: foundUser } });
     } else {
-      setMessage('Usuário não encontrado.');
+      setMessage('O nome que você digitou não existe ou não está cadastrado!');
     }
   };
 
@@ -138,9 +139,16 @@ const Initial: React.FC = () => {
             )}
           </div>
 
-          {message && <p className="text-red-500">{message}</p>}
+          <div className='flex items-center -mt-3 mb-10'>
+            {message && (
+              <p className="text-red text-start text-xs font-bold flex items-center">
+                <IoWarning className="mr-1 text-lg" /> {message}
+              </p>
+            )}
+          </div>
 
-          <div className="flex items-center pb-4">
+
+          <div className="flex items-center -mt-6 pb-2">
             <div className="w-full h-1 bg-secondary_color" />
             <span className="mx-2 text-base font-bold text-primary_text">ou</span>
             <div className="w-full h-1 bg-secondary_color" />
