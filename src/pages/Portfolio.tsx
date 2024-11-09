@@ -7,7 +7,7 @@ import Experiences from '../components/Experiences';
 import Contact from '../components/Contact';
 import Button from '../components/Button';
 
-interface GitHubUser  {
+interface GitHubUser {
   login: string;
   avatar_url: string;
   html_url: string;
@@ -19,18 +19,18 @@ interface GitHubUser  {
 
 const Portfolio: React.FC = () => {
   const location = useLocation();
-  const userData = location.state?.userData as GitHubUser  | null;
+  const userData = location.state?.userData as GitHubUser | null;
 
   return (
-    <div className="font-roboto"> 
-      <Header /> 
+    <div className="font-roboto">
+      <Header />
       <Button />
-      <div> 
-        {userData ? <Profile userData={userData} /> : <p>Carregando...</p>}
-        <Story /> 
-        <Experiences />
-        <Contact />
-      </div> 
+      <div>
+        <div id="profile" className='pt-1'>{userData ? <Profile userData={userData} /> : <p>Carregando...</p>}</div>
+        <div id="history" className='pt-14'><Story /></div>
+        <div id="experiences" className='pt-12 -mt-16'><Experiences /></div>
+        <div id="contact" className='pt-2 -mt-2'><Contact /></div>
+      </div>
     </div>
   );
 };
