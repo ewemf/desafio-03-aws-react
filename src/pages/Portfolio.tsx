@@ -45,11 +45,12 @@ const Portfolio: React.FC = () => {
       description: "Um projetão fellas da minha cidade que é muito fellas, um projeto tão fellas que não deixa de ser fellas, um projetinho fellas feito pra ser fellas, agora continuarei escrevendo pra ocupar espaço.",
     },
   ]);
+  const [additionalEmail, setAdditionalEmail] = useState("");
 
   const toggleEditMode = () => {
     setIsEditing(!isEditing);
     if (isEditing) {
-      // faço dps
+      // depois faço
     }
   };
 
@@ -57,16 +58,12 @@ const Portfolio: React.FC = () => {
     setEditableUserData({ ...editableUserData, [field]: value });
   };
 
-  const handleDeleteExperience = (index: number) => {
-    setExperiences(experiences.filter((_, i) => i !== index));
-  };
-
   return (
     <div className="font-roboto">
       <Header />
       <Button isEditing={isEditing} toggleEditMode={toggleEditMode} />
       <div>
-        <div id="profile" className='pt-1'>
+        <div id="profile">
           {userData ?
             <Profile 
               userData={editableUserData} 
@@ -74,21 +71,27 @@ const Portfolio: React.FC = () => {
               onEditChange={handleEditChange} 
             /> : <p>Carregando...</p>}
         </div>
-        <div id="history" className='pt-14'>
+        <div id="history">
           <Story 
             story={story} 
             isEditing={isEditing} 
             onEditChange={setStory} 
           />
         </div>
-        <div id="experiences" className='pt-12 -mt-16'>
+        <div id="experiences">
           <Experiences 
             experiences={experiences} 
             isEditing={isEditing} 
-            onDelete={handleDeleteExperience} 
+            onDelete={(index) => setExperiences(experiences.filter((_, i) => i !== index))} 
           />
         </div>
-        <div id="contact" className='pt-2 -mt-2'><Contact /></div>
+        <div id="contact">
+          <Contact 
+            isEditing={isEditing} 
+            additionalEmail={additionalEmail} 
+            setAdditionalEmail={setAdditionalEmail}
+          />
+        </div>
       </div>
     </div>
   );

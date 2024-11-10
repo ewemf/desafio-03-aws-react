@@ -1,6 +1,7 @@
 import React from 'react';
 import { AiFillEdit } from "react-icons/ai";
 import { TbTrashFilled } from "react-icons/tb";
+import { LuPlusCircle } from "react-icons/lu";
 
 interface ExperienceProps {
   experiences: Array<{
@@ -43,7 +44,14 @@ const Experiences: React.FC<ExperienceProps> = ({ experiences, isEditing, onDele
               </div>
               <button className="bg-dark_green text-white px-4 py-2 rounded w-full font-bold text-xl hover:bg-primary_color">Ver repositório</button>
             </div>
+            
           ))}
+          {isEditing && (
+          <div className="bg-card_color border-2 border-dark_green text-white h-100 w-auto rounded-lg shadow-primary_color shadow-3xl flex flex-col justify-center items-center py-12 cursor-pointer hover:text-primary_color">
+            <LuPlusCircle className='text-8xl mb-4'/>
+            <p className='text-3xl font-bold'>Adicionar card</p>
+          </div>
+          )}
         </div>
       </div>
     </div>
