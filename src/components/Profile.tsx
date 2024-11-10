@@ -41,8 +41,16 @@ const Profile: React.FC<ProfileProps> = ({ userData, isEditing, onEditChange }) 
 
   const saveLink = (url: string) => {
     setLinkedinUrl(url);
+    localStorage.setItem('linkedinUrl', url);
     onEditChange('linkedin_url', url);
   };
+
+  useEffect(() => {
+    const storedLinkedinUrl = localStorage.getItem('linkedinUrl');
+    if (storedLinkedinUrl) {
+      setLinkedinUrl(storedLinkedinUrl);
+    }
+  }, []);
 
   const handleExternalLink = (url: string) => {
     if (!url.startsWith('http://') && !url.startsWith('https://')) {
@@ -91,18 +99,18 @@ const Profile: React.FC<ProfileProps> = ({ userData, isEditing, onEditChange }) 
           </a>
           {isEditing ? (
             <>
-            <div className="relative inline-block cursor-pointer">
-              <button 
-                className="bg-dark_green text-white text-xl font-semibold w-48 px-1 py-2 rounded-xl shadow-primary_color shadow-3xl hover:bg-primary_color"
-                onClick={openModal}
-              >
-                LinkedIn
-              </button>
-              <div className="absolute bg-card_color rounded-full w-5 h-5 flex items-center justify-center -top-1 -right-1">
-                <img className='w-3' src={edit} alt="Edit Button" />
+              <div className="relative inline-block cursor-pointer">
+                <button 
+                  className="bg-dark_green text-white text-xl font-semibold w-48 px-1 py-2 rounded-xl shadow-primary_color shadow-3xl hover:bg-primary_color"
+                  onClick={openModal}
+                >
+                  LinkedIn
+                </button>
+                <div className="absolute bg-card_color rounded-full w-5 h-5 flex items-center justify-center -top-1 -right-1">
+                  <img className='w-3' src={edit} alt="Edit Button" />
+                </div>
               </div>
-            </div>
-          </>
+            </>
           ) : (
             linkedinUrl && (
               <button 
