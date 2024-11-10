@@ -8,7 +8,8 @@ import twt from '../imgs/twitter.svg';
 import ytBeW from '../imgs/b&w/ytBeW.svg';
 import yt from '../imgs/youtube.svg';
 import { FaLocationDot } from "react-icons/fa6";
-import LinkModal from './LinkModal';
+import LinkModal from '../components/LinkModal';
+import edit from '../imgs/edit-icon.svg';
 
 type Platform = 'instagram' | 'facebook' | 'twitter' | 'youtube';
 
@@ -85,27 +86,47 @@ const Contact: React.FC<ContactProps> = ({ isEditing, additionalEmail, setAdditi
           <p className="text-2xl mb-3 font-bold text-primary_text">Assim que possível, me envie um email para que possamos <br /> trabalhar felizes juntos!</p>
           <div className="flex justify-center space-x-1 mb-8">
             {isEditing || socialLinks.instagram ? (
-              <div onClick={() => openModal('instagram')} className="mt-12 bg-dark_green rounded-full w-16 h-16 flex items-center justify-center cursor-pointer">
+              <div onClick={() => openModal('instagram')} className="mt-12 bg-dark_green rounded-full w-16 h-16 flex items-center justify-center cursor-pointer relative">
                 <img className='w-12 absolute opacity-100 hover:opacity-0 transition-opacity duration-100' src={instaBeW} alt="Instagram B&W" />
                 <img className='w-12 absolute opacity-0 hover:opacity-100 transition-opacity duration-100' src={insta} alt="Instagram" />
+                {isEditing && (
+                  <div className="absolute bg-card_color rounded-full w-4 h-4 flex items-center justify-center top-0 right-0">
+                    <img className='w-2' src={edit} alt="Edit Button" />
+                  </div>
+                )}
               </div>
             ) : null}
             {isEditing || socialLinks.facebook ? (
-              <div onClick={() => openModal('facebook')} className="mt-12 bg-dark_green rounded-full w-16 h-16 flex items-center justify-center cursor-pointer">
+              <div onClick={() => openModal('facebook')} className="mt-12 bg-dark_green rounded-full w-16 h-16 flex items-center justify-center cursor-pointer relative">
                 <img className='w-12 absolute opacity-100 hover:opacity-0 transition-opacity duration-100' src={fbBeW} alt="Facebook B&W" />
                 <img className='w-12 absolute opacity-0 hover:opacity-100 transition-opacity duration-100' src={face} alt="Facebook" />
+                {isEditing && (
+                  <div className="absolute bg-card_color rounded-full w-4 h-4 flex items-center justify-center top-0 right-0">
+                    <img className='w-2' src={edit} alt="Edit Button" />
+                  </div>
+                )}
               </div>
             ) : null}
             {isEditing || socialLinks.twitter ? (
-              <div onClick={() => openModal('twitter')} className="mt-12 bg-dark_green rounded-full w-16 h-16 flex items-center justify-center cursor-pointer">
+              <div onClick={() => openModal('twitter')} className="mt-12 bg-dark_green rounded-full w-16 h-16 flex items-center justify-center cursor-pointer relative">
                 <img className='w-12 absolute opacity-100 hover:opacity-0 transition-opacity duration-100' src={twtBeW} alt="Twitter B&W" />
                 <img className='w-12 absolute opacity-0 hover:opacity-100 transition-opacity duration-100' src={twt} alt="Twitter" />
+                {isEditing && (
+                  <div className="absolute bg-card_color rounded-full w-4 h-4 flex items-center justify-center top-0 right-0">
+                    <img className='w-2' src={edit} alt="Edit Button" />
+                  </div>
+                )}
               </div>
             ) : null}
             {isEditing || socialLinks.youtube ? (
-              <div onClick={() => openModal('youtube')} className="mt-12 bg-dark_green rounded-full w-16 h-16 flex items-center justify-center cursor-pointer">
+              <div onClick={() => openModal('youtube')} className="mt-12 bg-dark_green rounded-full w-16 h-16 flex items-center justify-center cursor-pointer relative">
                 <img className='w-12 absolute opacity-100 hover:opacity-0 transition-opacity duration-100' src={ytBeW} alt="Youtube B&W" />
                 <img className='w-12 absolute opacity-0 hover:opacity-100 transition-opacity duration-100' src={yt} alt="Youtube" />
+                {isEditing && (
+                  <div className="absolute bg-card_color rounded-full w-4 h-4 flex items-center justify-center top-0 right-0">
+                    <img className='w-2' src={edit} alt="Edit Button" />
+                  </div>
+                )}
               </div>
             ) : null}
           </div>
