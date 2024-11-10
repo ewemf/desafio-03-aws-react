@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import instaBeW from '../imgs/b&w/instaBeW.svg';
 import insta from '../imgs/insta.svg';
 import fbBeW from '../imgs/b&w/fbBeW.svg';
@@ -8,8 +8,8 @@ import twt from '../imgs/twitter.svg';
 import ytBeW from '../imgs/b&w/ytBeW.svg';
 import yt from '../imgs/youtube.svg';
 import { FaLocationDot } from "react-icons/fa6";
+import edit from '../imgs/edit-icon.svg'
 import LinkModal from '../components/LinkModal';
-import edit from '../imgs/edit-icon.svg';
 
 type Platform = 'instagram' | 'facebook' | 'twitter' | 'youtube';
 
@@ -36,7 +36,11 @@ const Contact: React.FC<ContactProps> = ({ isEditing, additionalEmail, setAdditi
     } else {
       const url = socialLinks[platform];
       if (url) {
-        window.open(url, '');
+        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+          window.open('http://' + url, '_blank');
+        } else {
+          window.open(url, '_blank');
+        }
       }
     }
   };
