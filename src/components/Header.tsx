@@ -5,13 +5,20 @@ const Header: React.FC = () => {
   const scrollToSection = (id: string): void => {
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      const headerOffset = 30;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.scrollY - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
     }
   };
 
   return (
-    <header className="bg-dark_green fixed top-0 p-2 rounded-b-3xl w-full">
-      <div className="mx-auto px-4 py-4 flex justify-between items-center">
+    <header className="bg-dark_green fixed top-0 p-2 rounded-b-3xl w-full z-10">
+      <div className="mx-auto px- 4 py-4 flex justify-between items-center">
         <div className="flex-1 flex justify-center">
           <nav className="flex space-x-8 text-xl">
             <a href="#profile" className="text-secondary_text font-semibold hover:text-primary_color" onClick={(e) => { e.preventDefault(); scrollToSection('profile') }}>Início</a>
