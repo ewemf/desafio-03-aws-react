@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import edit from '../imgs/edit-icon.svg';
 import LinkModal from '../components/LinkModal'; 
 
@@ -20,8 +20,16 @@ interface ProfileProps {
 }
 
 const Profile: React.FC<ProfileProps> = ({ userData, isEditing, onEditChange }) => {
+  const [name, setName] = useState("Fulano");
   const [linkedinUrl, setLinkedinUrl] = useState(userData.linkedin_url || "");
   const [isModalOpen, setModalOpen] = useState(false);
+
+  useEffect(() => {
+    const savedName = localStorage.getItem('userName');
+    if (savedName) {
+      setName(savedName);
+    }
+  }, []);
 
   const openModal = () => {
     setModalOpen(true);
@@ -43,6 +51,13 @@ const Profile: React.FC<ProfileProps> = ({ userData, isEditing, onEditChange }) 
     window.open(url, '_blank');
   };
 
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newName = e.target.value;
+    setName(newName);
+    onEditChange('name', newName);
+    localStorage.setItem('userName', newName);
+  };
+
   return (
     <div className="flex justify-between my-32 mb-16 gap-x-24">
       <div className="flex-col items-center flex-1 text-center my-auto">
@@ -53,21 +68,21 @@ const Profile: React.FC<ProfileProps> = ({ userData, isEditing, onEditChange }) 
       </div>
 
       <div className='flex-col items-center flex-1 text-left my-auto mx-auto'>
-        <h2 className="text-5xl font-extrabold mx-auto my-auto leading-tight">
-          Hello<br /> I’m {
-            isEditing ? (
-              <input
-                className="border-b-2 border-black text-primary_color w-80"
-                type="text"
-                value={userData.name}
-                maxLength={40}
-                onChange={(e) => onEditChange('name', e.target.value)}
-              />
-            ) : (
-              <span className="text-primary_color">{userData.name}</span>
-            )
-          }
-        </h2>
+      <h2 className="text-5xl font-extrabold mx-auto my-auto leading-tight">
+      Hello<br /> I’m {
+        isEditing ? (
+          <input
+            className="border-b-2 border-black text-primary_color w-80"
+            type="text"
+            value={name}
+            maxLength={40}
+            onChange={handleNameChange}
+          />
+        ) : (
+          <span className="text-primary_color">{name}</span>
+        )
+      }
+    </h2>
         <p className="text-primary_text mt-2 font-semibold w-96">{userData.bio}</p>
 
         <div className="space-x-4 mt-4">
