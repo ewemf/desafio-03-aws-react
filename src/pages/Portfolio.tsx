@@ -79,11 +79,19 @@ const Portfolio: React.FC = () => {
           />
         </div>
         <div id="experiences">
-          <Experiences 
-            experiences={experiences} 
-            isEditing={isEditing} 
-            onDelete={(index) => setExperiences(experiences.filter((_, i) => i !== index))} 
-          />
+        <Experiences 
+          experiences={experiences} 
+          isEditing={isEditing} 
+          onDelete={(index) => setExperiences(experiences.filter((_, i) => i !== index))} 
+          onSave={(exp, index) => {
+            if (index !== null) {
+              const updatedExperiences = experiences.map((e, i) => (i === index ? exp : e));
+              setExperiences(updatedExperiences);
+            } else {
+              setExperiences([...experiences, exp]);
+            }
+          }}
+        />
         </div>
         <div id="contact">
           <Contact 
