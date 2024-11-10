@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from '../components/Header';
 import Profile from '../components/Profile';
@@ -47,11 +47,15 @@ const Portfolio: React.FC = () => {
   ]);
   const [additionalEmail, setAdditionalEmail] = useState("");
 
+  const [isLoggedInWithGitHub, setIsLoggedInWithGitHub] = useState(false);
+
+  useEffect(() => {
+    const loginMethod = localStorage.getItem('loginMethod');
+    setIsLoggedInWithGitHub(loginMethod === 'github');
+  }, []);
+
   const toggleEditMode = () => {
     setIsEditing(!isEditing);
-    if (isEditing) {
-      // depois faço
-    }
   };
 
   const handleEditChange = (field: string, value: string) => {
@@ -61,7 +65,7 @@ const Portfolio: React.FC = () => {
   return (
     <div className="font-roboto">
       <Header />
-      <Button isEditing={isEditing} toggleEditMode={toggleEditMode} />
+      {isLoggedInWithGitHub && <Button isEditing={isEditing} toggleEditMode={toggleEditMode} />}
       <div>
         <div id="profile">
           {userData ?
