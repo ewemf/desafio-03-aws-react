@@ -35,9 +35,15 @@ const Initial: React.FC = () => {
   useEffect(() => {
     const storedUsers = localStorage.getItem('users');
     if (storedUsers) {
-      setUsers(JSON.parse(storedUsers));
+      const parsedUsers: GitHubUser[] = JSON.parse(storedUsers);
+      const updatedUsers = parsedUsers.map((user: GitHubUser) => ({
+        ...user,
+        name: localStorage.getItem('userName') || user.name || "Fulano"
+      }));
+      setUsers(updatedUsers);
     }
   }, []);
+  
 
   useEffect(() => {
     if (inputValue) {
