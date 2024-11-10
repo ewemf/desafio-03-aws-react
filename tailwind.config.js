@@ -14,6 +14,7 @@ module.exports = {
         card_color: "#508991",
         dark_green: "#172A3A",
         red: "#992020",
+        edit_color: "#09404DCF",
       },
       fontSize: {
         "0xl": "26.2px",
