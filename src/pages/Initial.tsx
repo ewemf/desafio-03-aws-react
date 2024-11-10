@@ -28,6 +28,10 @@ const Initial: React.FC = () => {
   const auth = getAuth(app);
   const navigate = useNavigate();
 
+  const setLoginMethod = (method: string) => {
+    localStorage.setItem('loginMethod', method);
+  };
+
   useEffect(() => {
     const storedUsers = localStorage.getItem('users');
     if (storedUsers) {
@@ -52,6 +56,7 @@ const Initial: React.FC = () => {
   const handleSearch = () => {
     const foundUser = users.find(user => user.name.toLowerCase() === inputValue.toLowerCase());
     if (foundUser) {
+      setLoginMethod('search');
       navigate('/portfolio', { state: { userData: foundUser } });
     } else {
       setMessage('O nome que você digitou não existe ou não está cadastrado!');
@@ -88,6 +93,7 @@ const Initial: React.FC = () => {
       setUsers(updatedUsers); 
       localStorage.setItem('users', JSON.stringify(updatedUsers));
 
+      setLoginMethod('github');
       navigate('/portfolio', { state: { userData: newUser } });
     } catch (err) {
       console.error(err);
@@ -95,75 +101,72 @@ const Initial: React.FC = () => {
   };
 
   return (
-    <>
-      <div className="flex items-center justify-center min-h-screen font-roboto">
-        <div className="w-full max-w-xl px-4 py-8 text-center rounded-lg">
-          <h1 className="mb-4 text-0xl w-auto font-bold text-primary_text">
-            Digite o nome do usuário que deseja buscar
-          </h1>
+    <div className="flex items-center justify-center min-h-screen font-roboto">
+      <div className="w-full max-w-xl px-4 py-8 text-center rounded-lg">
+        <h1 className="mb-4 text-0xl w-auto font-bold text-primary_text">
+          Digite o nome do usuário que deseja buscar
+        </h1>
 
-          <div className="flex items-center justify-center w-full mx-auto pb-4 relative">
-            <div className="flex-grow flex items-center rounded-xl border p-2 mr-3 border-primary_text overflow-hidden">
-              <input
-                type="text"
-                placeholder="Digite o nome do usuário"
-                value={inputValue}
-                onChange={handleInputChange}
-                onKeyPress={handleKeyPress}
-                onFocus={() => setShowDropdown(true)}
-                onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
-                className="flex outline-none w-full text-primary_text"
-              />
-            </div>
-            <button
-              onClick={handleSearch}
-              disabled={!inputValue}
-              className={`px-3 py-2 h-10 w-16 text-white ${inputValue ? 'bg-secondary_color' : 'bg-tertiary_text hover:bg-tertiary_text cursor-not-allowed'} border border-primary_text hover:bg-primary_color rounded-xl flex items-center justify-center`}
-            >
-              <FaArrowRight className="w-6 h-6 flex items-center justify-center" />
-            </button>
-
-            {showDropdown && filteredUsers.length > 0 && (
-              <ul className="absolute top-12 left-0 w-full bg-white text-gray-500 border border-gray-500 rounded-xl overflow-hidden z-10">
-                {filteredUsers.map(user => (
-                  <li 
-                    key={user.login} 
-                    className="p-2 hover:bg-gray-200 cursor-pointer text-left flex items-center"
-                    onMouseDown={() => handleUserClick(user.name)}
-                  >
-                    <img src={person} alt={person} className="w-4 h-4 mr-2" />
-                    {user.name}
-                  </li>
-                ))}
-              </ul>
-            )}
+        <div className="flex items-center justify-center w-full mx-auto pb-4 relative">
+          <div className="flex-grow flex items-center rounded-xl border p-2 mr-3 border-primary_text overflow-hidden">
+            <input
+              type="text"
+              placeholder="Digite o nome do usuário"
+              value={inputValue}
+              onChange={handleInputChange}
+              onKeyPress={handleKeyPress}
+              onFocus={() => setShowDropdown(true)}
+              onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
+              className="flex outline-none w-full text-primary_text"
+            />
           </div>
+          <button
+            onClick={handleSearch}
+            disabled={!inputValue}
+            className={`px-3 py-2 h-10 w-16 text-white ${inputValue ? 'bg-secondary_color' : 'bg-tertiary_text hover:bg-tertiary_text cursor-not-allowed'} border border-primary_text hover:bg-primary_color rounded-xl flex items-center justify-center`}
+          >
+            <FaArrowRight className="w-6 h-6 flex items-center justify-center" />
+          </button>
 
-          <div className='flex items-center -mt-3 mb-10'>
-            {message && (
-              <p className="text-red text-start text-xs font-bold flex items-center">
-                <IoWarning className="mr-1 text-lg" /> {message}
-              </p>
-            )}
-          </div>
+          {showDropdown && filteredUsers.length > 0 && (
+            <ul className="absolute top-12 left-0 w-full bg-white text-gray-500 border border-gray-500 rounded-xl overflow-hidden z-10">
+              {filteredUsers.map(user => (
+                <li 
+                  key={user.login} 
+                  className="p-2 hover:bg-gray-200 cursor-pointer text-left flex items-center"
+                  onMouseDown={() => handleUserClick(user.name)}
+                >
+                  <img src={person} alt={person} className="w-4 h-4 mr-2" />
+                  {user.name}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
 
+        <div className='flex items-center -mt-3 mb-10'>
+          {message && (
+            <p className="text-red text-start text-xs font-bold flex items-center">
+              <IoWarning className="mr-1 text-lg" /> {message}
+            </p>
+          )}
+        </div>
 
-          <div className="flex items-center -mt-6 pb-2">
-            <div className="w-full h-1 bg-secondary_color" />
-            <span className="mx-2 text-base font-bold text-primary_text">ou</span>
-            <div className="w-full h-1 bg-secondary_color" />
-          </div>
+        <div className="flex items-center -mt-6 pb-2">
+          <div className="w-full h-1 bg-secondary_color" />
+          <span className="mx-2 text-base font-bold text-primary_text">ou</span>
+          <div className="w-full h-1 bg-secondary_color" />
+        </div>
 
-          <div className="flex items-center justify-center space-x-2">
-            <p className="text-base font-bold px-1 text-primary_text">Acesse sua conta com</p>
-            <button onClick={gitHubSignUp} className="flex items-center w-24 h-10 px-4 text-white bg-dark_green rounded-full hover:bg-primary_color space-x-2">
-              <TbBrandGithubFilled className="w-12 h-12" />
-              <span className='font-bold text-xs'>GitHub</span>
-            </button>
-          </div>
+        <div className="flex items-center justify-center space-x-2">
+          <p className="text-base font-bold px-1 text-primary_text">Acesse sua conta com</p>
+          <button onClick={gitHubSignUp} className="flex items-center w-24 h-10 px-4 text-white bg-dark_green rounded-full hover:bg-primary_color space-x-2">
+            <TbBrandGithubFilled className="w-12 h-12" />
+            <span className='font-bold text-xs'>GitHub</span>
+          </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
