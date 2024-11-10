@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Header: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loggedInViaGitHub, setLoggedInViaGitHub] = useState(false);
+  const [profileImageUrl, setProfileImageUrl] = useState('');
   const navigate = useNavigate();
   const auth = getAuth();
 
@@ -13,12 +13,12 @@ const Header: React.FC = () => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) {
         setIsLoggedIn(true);
-        if (user.providerData.some(provider => provider.providerId === 'github.com')) {
-          setLoggedInViaGitHub(true);
+        if (user.photoURL) {
+          setProfileImageUrl(user.photoURL);
         }
       } else {
         setIsLoggedIn(false);
-        setLoggedInViaGitHub(false);
+        setProfileImageUrl('');
       }
     });
 
@@ -59,13 +59,13 @@ const Header: React.FC = () => {
         </div>
         {isLoggedIn ? (
           <button onClick={handleLogout} className="flex items-center text-secondary_text hover:text-primary_color">
-            <TbLogin2 className='text-2xl' />
-            <p className='text-xl px-1 font-semibold'>Sair</p>
+            <p className="text-xl px-1 font-semibold pr-3">Sair</p>
+              <img src={profileImageUrl} alt="Foto de perfil" className="w-8 h-8 rounded-full mr-1" />
           </button>
         ) : (
           <button onClick={() => navigate('/')} className="flex items-center text-secondary_text hover:text-primary_color">
-            <TbLogin2 className='text-2xl' />
-            <p className='text-xl px-1 font-semibold'>Entrar</p>
+            <TbLogin2 className="text-2xl mr-1" />
+            <p className="text-xl px-1 font-semibold">Entrar</p>
           </button>
         )}
       </div>
