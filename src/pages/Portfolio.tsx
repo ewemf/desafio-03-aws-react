@@ -23,7 +23,16 @@ const Portfolio: React.FC = () => {
   const userData = location.state?.userData as GitHubUser | null;
 
   const [isEditing, setIsEditing] = useState(false);
-  const [editableUserData, setEditableUserData] = useState<GitHubUser>(userData || {} as GitHubUser);
+  const [editableUserData, setEditableUserData] = useState<GitHubUser>({
+    login: userData?.login || '',
+    avatar_url: userData?.avatar_url || '',
+    html_url: userData?.html_url || '',
+    linkedin_url: userData?.linkedin_url || '',
+    name: userData?.name || 'Fulano',
+    email: userData?.email || null,
+    location: userData?.location || null,
+    bio: userData?.bio || null,
+  });
   const [story, setStory] = useState("");
   const [experiences, setExperiences] = useState([
     {
@@ -59,7 +68,14 @@ const Portfolio: React.FC = () => {
   };
 
   const handleEditChange = (field: string, value: string) => {
-    setEditableUserData({ ...editableUserData, [field]: value });
+    const updatedData = { ...editableUserData, [field]: value };
+    setEditableUserData(updatedData);
+
+    const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
+    const updatedUsers = storedUsers.map((user: GitHubUser) =>
+      user.login === editableUserData.login ? updatedData : user
+    );
+    localStorage.setItem('users', JSON.stringify(updatedUsers));
   };
 
   return (
@@ -70,9 +86,9 @@ const Portfolio: React.FC = () => {
         <div id="profile">
           {userData ?
             <Profile 
-              userData={editableUserData} 
-              isEditing={isEditing} 
-              onEditChange={handleEditChange} 
+            userData={editableUserData} 
+            isEditing={isEditing} 
+            onEditChange={handleEditChange}
             /> : <p>Carregando...</p>}
         </div>
         <div id="history">
