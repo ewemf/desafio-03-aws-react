@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import edit from '../imgs/edit-icon.svg';
 import done from '../imgs/done.svg';
 
