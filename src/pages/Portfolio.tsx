@@ -93,7 +93,7 @@ const Portfolio: React.FC = () => {
         </div>
         <div id="history">
           <Story 
-            story={story} 
+            initialStory={story} 
             isEditing={isEditing} 
             onEditChange={setStory} 
           />
