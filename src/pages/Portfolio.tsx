@@ -34,26 +34,16 @@ const Portfolio: React.FC = () => {
     bio: userData?.bio || null,
   });
   const [story, setStory] = useState("");
-  const [experiences, setExperiences] = useState([
-    {
-      title: "Dev Junior na NASA",
-      period: "Junho - 2002 - 2020",
-      technologies: ["Figma", "React", "Typescript"],
-      description: "Trabalhei com figma na nasa construindo designs de foguetes usando figma pro Elon Musk",
-    },
-    {
-      title: "Projeto de caridade na minha cidade",
-      period: "2 semanas",
-      technologies: ["Javascript", "Angular"],
-      description: "Trabalhei em um projeto na cidade que envolvia React e Scrum para ajudar idosos na minha cidade e seus problemas de movimentação pela cidade.",
-    },
-    {
-      title: "Projetão Fellas",
-      period: "2 meses",
-      technologies: ["Figma", "React", "Typescript"],
-      description: "Um projetão fellas da minha cidade que é muito fellas, um projeto tão fellas que não deixa de ser fellas, um projetinho fellas feito pra ser fellas, agora continuarei escrevendo pra ocupar espaço.",
-    },
-  ]);
+  const [experiences, setExperiences] = useState<Array<{
+    title: string;
+    period: string;
+    technologies: string[];
+    description: string;
+    repositoryUrl?: string;
+  }>>(() => {
+    const savedExperiences = localStorage.getItem('experiences');
+    return savedExperiences ? JSON.parse(savedExperiences) : [];
+  });
   const [additionalEmail, setAdditionalEmail] = useState("");
 
   const [isLoggedInWithGitHub, setIsLoggedInWithGitHub] = useState(false);
