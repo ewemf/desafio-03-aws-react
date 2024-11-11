@@ -1,5 +1,5 @@
 # Projeto (Desafio 03 - AWS REACT)
-# React + TypeScript + Vite
+## React + TypeScript + Vite
 
 - Instale as dependências do projeto pelo terminal:
 ```
