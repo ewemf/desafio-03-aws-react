@@ -8,7 +8,7 @@ import twt from '../imgs/twitter.svg';
 import ytBeW from '../imgs/b&w/ytBeW.svg';
 import yt from '../imgs/youtube.svg';
 import { FaLocationDot } from "react-icons/fa6";
-import edit from '../imgs/edit-icon.svg'
+import edit from '../imgs/edit-icon.svg';
 import LinkModal from '../components/LinkModal';
 
 type Platform = 'instagram' | 'facebook' | 'twitter' | 'youtube';
@@ -29,6 +29,13 @@ const Contact: React.FC<ContactProps> = ({ isEditing, additionalEmail, setAdditi
     youtube: '',
   });
 
+  useEffect(() => {
+    const savedEmail = localStorage.getItem('additionalEmail');
+    const savedLinks = JSON.parse(localStorage.getItem('socialLinks') || '{}');
+    if (savedEmail) setAdditionalEmail(savedEmail);
+    if (savedLinks) setSocialLinks(savedLinks);
+  }, [setAdditionalEmail]);
+
   const openModal = (platform: Platform) => {
     if (isEditing) {
       setCurrentPlatform(platform);
@@ -47,13 +54,21 @@ const Contact: React.FC<ContactProps> = ({ isEditing, additionalEmail, setAdditi
 
   const saveLink = (newLink: string) => {
     if (currentPlatform) {
-      setSocialLinks((prevLinks) => ({
-        ...prevLinks,
+      const updatedLinks = {
+        ...socialLinks,
         [currentPlatform]: newLink,
-      }));
+      };
+      setSocialLinks(updatedLinks);
+      localStorage.setItem('socialLinks', JSON.stringify(updatedLinks));
       setModalOpen(false);
       setCurrentPlatform(null);
     }
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const email = e.target.value;
+    setAdditionalEmail(email);
+    localStorage.setItem('additionalEmail', email);
   };
 
   useEffect(() => {
@@ -75,7 +90,7 @@ const Contact: React.FC<ContactProps> = ({ isEditing, additionalEmail, setAdditi
                 className="text-4xl font-bold mb-4 bg-transparent border-b-2 border-secondary_text text-center mx-auto"
                 placeholder="Adicione um email adicional"
                 value={additionalEmail}
-                onChange={(e) => setAdditionalEmail(e.target.value)}
+                onChange={handleEmailChange}
                 style={{ width: '40%' }}
               />
             ) : (
