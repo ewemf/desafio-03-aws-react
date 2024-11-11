@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AiFillEdit } from "react-icons/ai";
 import { TbTrashFilled } from "react-icons/tb";
 import { LuPlusCircle } from "react-icons/lu";
@@ -62,6 +62,10 @@ const Experiences: React.FC<ExperienceProps> = ({ experiences, isEditing, onDele
     onSave(exp, currentIndex);
     closeModal();
   };
+
+  useEffect(() => {
+    localStorage.setItem('experiences', JSON.stringify(experiences));
+  }, [experiences]);
 
   return (
     <div id="experiences" className="min-h-screen w-full mt-20 my-auto p-8 bg-secondary_color">
