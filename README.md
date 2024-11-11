@@ -28,5 +28,6 @@ npm run dev
 
 ---
 
-Agradeço aos intrutores e colegas do PB por tirarem dúvidas e pelas ajudas mútuas durante o percurso do projeto <3 <br></br>
-Feito por Ewellyn.
+Agradeço aos intrutores e colegas do PB por tirarem dúvidas e pelas ajudas mútuas durante o percurso do projeto ❤️
+---
+feito por [Ewellyn Maria](https://github.com/ewemf) 😊
