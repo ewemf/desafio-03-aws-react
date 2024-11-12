@@ -1,5 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import ExpModal from './ExpModal';
+import '@testing-library/jest-dom';
 
 describe('ExpModal Component', () => {
   const mockOnClose = jest.fn();
