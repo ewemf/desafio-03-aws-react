@@ -1,5 +1,5 @@
 # Projeto (Desafio 03 - AWS REACT)
-LINK DO DEPLOY FEITO PELA AWS EC2: http://ec2-15-228-161-57.sa-east-1.compute.amazonaws.com
+LINK DO DEPLOY FEITO PELA AWS EC2 - EVIDÊNCIAS (prints) DE QUE FORAM CONCLUÍDAS COM ÊXITO ESTÃO NA PASTA [evidencias](evidencias) 
 ## React + TypeScript + Vite
 
 - Instale as dependências do projeto pelo terminal:
