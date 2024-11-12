@@ -84,7 +84,7 @@ const Experiences: React.FC<ExperienceProps> = ({ experiences, isEditing, onDele
                     <div className="bg-card_color text-white flex-1 flex items-center justify-center w-full rounded-t-lg cursor-pointer" onClick={() => openModal(exp, index)}>
                       <AiFillEdit className="text-8xl text-primary_color" />
                     </div>
-                    <div className="bg-red text-white flex-1 flex items-center justify-center w-full rounded-b-lg cursor-pointer" onClick={() => onDelete(index)}>
+                    <div className="bg-red text-white flex-1 flex items-center justify-center w-full rounded-b-lg cursor-pointer" onClick={() => onDelete(index)} data-testid={`delete-button-${index}`}>
                       <TbTrashFilled className="text-8xl text-primary_color" />
                     </div>
                   </div>
